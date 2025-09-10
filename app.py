@@ -36,7 +36,7 @@ def get_google_sheets_client():
     """Initialize Google Sheets client with service account credentials"""
     try:
         # Try to get credentials from environment variable first
-        creds_json = os.environ.get('google_sheets_credential')
+        creds_json = os.environ.get('GOOGLE_SHEETS_CREDENTIALS')
         if creds_json:
             import json
             creds_dict = json.loads(creds_json)
