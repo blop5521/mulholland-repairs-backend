@@ -70,11 +70,33 @@ export function RepairPage() {
     e.preventDefault()
     setIsSubmitting(true)
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    try {
+      const response = await fetch('https://mulholland-repairs-api.onrender.com/api/forms/repair', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          description: formData.description,
+          images: formData.images.length > 0 ? 'Images uploaded' : null
+        })
+      })
+      
+      if (response.ok) {
+        setIsSubmitted(true)
+      } else {
+        console.error('Form submission failed')
+        alert('Failed to submit form. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      alert('Failed to submit form. Please try again.')
+    }
     
     setIsSubmitting(false)
-    setIsSubmitted(true)
   }
 
   if (isSubmitted) {

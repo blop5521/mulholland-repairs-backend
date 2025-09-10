@@ -8,9 +8,9 @@ export function HomePage() {
     {
       icon: <Wrench className="h-8 w-8 text-blue-600" />,
       title: "Repair Services",
-      description: "Expert repair for e-foil boards, surfboards, SUPs, kayaks, canoes, and carbon fiber bicycles.",
+      description: "Expert repair for kayaks, canoes, standup paddleboards (SUPs), e-foil boards, and surfboards.",
       link: "/repair",
-      features: ["E-foil boards & wings", "Carbon fiber bicycles", "All paddlesports equipment"]
+      features: ["Kayaks", "Canoes", "All paddlesports equipment"]
     },
     {
       icon: <Waves className="h-8 w-8 text-teal-600" />,
@@ -46,12 +46,10 @@ export function HomePage() {
               Serving the New England paddlesports community with precision and passion.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-white text-blue-900 hover:bg-blue-50">
-                <Link to="/repair">
-                  Get a Repair Quote
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
+              <Link to="/repair" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-white text-blue-900 hover:bg-blue-100 h-11 px-8 rounded-md">
+                Get a Repair Quote
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
               <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-blue-900">
                 <Link to="/contact">Contact Us</Link>
               </Button>

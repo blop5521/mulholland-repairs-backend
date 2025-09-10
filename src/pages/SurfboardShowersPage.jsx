@@ -88,11 +88,34 @@ export function SurfboardShowersPage() {
     e.preventDefault()
     setIsSubmitting(true)
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    try {
+      const response = await fetch('https://mulholland-repairs-api.onrender.com/api/forms/surfboard-showers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          valve: formData.valve,
+          shape: formData.shape,
+          wood: formData.wood,
+          length: formData.length[0]
+        })
+      })
+      
+      if (response.ok) {
+        setIsSubmitted(true)
+      } else {
+        console.error('Form submission failed')
+        alert('Failed to submit order. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      alert('Failed to submit order. Please try again.')
+    }
     
     setIsSubmitting(false)
-    setIsSubmitted(true)
   }
 
   if (isSubmitted) {

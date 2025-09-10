@@ -24,8 +24,12 @@ export function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="bg-gradient-to-r from-blue-600 to-teal-600 p-2 rounded-lg">
-              <Waves className="h-6 w-6 text-white" />
+            <div className="p-2">
+              <img
+                src="/Mulholland-Logo2-Color1000px.png"
+                alt="Mulholland Repairs Logo"
+                className="h-8 w-8 md:h-10 md:w-10 lg:h-12 lg:w-12 object-contain"
+              />
             </div>
             <div>
               <div className="font-bold text-xl text-gray-900">Mulholland Repairs</div>

@@ -1,10 +1,21 @@
 import os
 import sys
+import smtplib
+import ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from datetime import datetime
 sys.path.insert(0, os.path.dirname(__file__))
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
+import gspread
+from google.oauth2.service_account import Credentials
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'asdf#FGSgvasgf$5$WGT')
@@ -12,10 +23,93 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'asdf#FGSgvasgf$5$WGT')
 # Enable CORS for all routes - allow your frontend domain
 CORS(app, origins=['https://mulhollandrepairs.com', 'https://www.mulhollandrepairs.com', 'https://mulhollandrepairs.netlify.app'])
 
+# Google Sheets configuration
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
+
+# Email configuration
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+SENDER_EMAIL = os.environ.get('GMAIL_USER')
+SENDER_PASSWORD = os.environ.get('GMAIL_APP_PASSWORD')
+
+def get_google_sheets_client():
+    """Initialize Google Sheets client with service account credentials"""
+    try:
+        # Get credentials from environment variable (JSON string)
+        creds_json = os.environ.get('GOOGLE_SHEETS_CREDENTIALS')
+        if not creds_json:
+            print("GOOGLE_SHEETS_CREDENTIALS environment variable not found")
+            return None
+            
+        import json
+        creds_dict = json.loads(creds_json)
+        creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
+        client = gspread.authorize(creds)
+        return client
+    except Exception as e:
+        print(f"Error initializing Google Sheets client: {e}")
+        return None
+
 def append_to_sheet(sheet_name, data):
-    """Simulate appending data to a Google Sheet"""
-    print(f"Would append to {sheet_name}: {data}")
-    return True
+    """Append data to a Google Sheet"""
+    client = get_google_sheets_client()
+    if not client:
+        print("Failed to get Google Sheets client")
+        return False
+    
+    try:
+        sheet = client.open(sheet_name).sheet1
+        # Add timestamp
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        data.insert(0, timestamp)
+        sheet.append_row(data)
+        print(f"Successfully appended to {sheet_name}: {data}")
+        return True
+    except Exception as e:
+        print(f"Error appending to sheet: {e}")
+        return False
+
+def send_notification_email(form_type, data):
+    """Send email notification for form submission"""
+    if not SENDER_EMAIL or not SENDER_PASSWORD:
+        print("Email credentials not configured")
+        return False
+    
+    try:
+        # Create message
+        msg = MIMEMultipart()
+        msg['From'] = SENDER_EMAIL
+        msg['To'] = 'mulhollandsurfboards@gmail.com'
+        msg['Subject'] = f'New {form_type} Submission - Mulholland Repairs'
+        
+        # Create email body
+        body = f"""
+New {form_type} submission received:
+
+"""
+        
+        for key, value in data.items():
+            body += f"{key.title()}: {value}\n"
+        
+        body += f"\nTimestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        
+        msg.attach(MIMEText(body, 'plain'))
+        
+        # Create SSL context
+        context = ssl.create_default_context()
+        
+        # Connect to server and send email
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls(context=context)
+            server.login(SENDER_EMAIL, SENDER_PASSWORD)
+            server.send_message(msg)
+        
+        print(f"Email notification sent for {form_type}")
+        return True
+        
+    except Exception as e:
+        print(f"Error sending email notification: {e}")
+        return False
 
 @app.route('/api/forms/repair', methods=['POST'])
 def submit_repair_form():
@@ -40,6 +134,16 @@ def submit_repair_form():
         
         # Append to Google Sheets
         success = append_to_sheet('Repair Requests', sheet_data)
+        
+        # Send email notification
+        email_data = {
+            'name': data.get('name'),
+            'email': data.get('email'),
+            'phone': data.get('phone', ''),
+            'description': data.get('description'),
+            'images': 'Images uploaded' if data.get('images') else 'No images'
+        }
+        send_notification_email('Repair Request', email_data)
         
         if success:
             return jsonify({'message': 'Repair request submitted successfully'}), 200
@@ -75,6 +179,17 @@ def submit_surfboard_shower_form():
         # Append to Google Sheets
         success = append_to_sheet('Surfboard Shower Orders', sheet_data)
         
+        # Send email notification
+        email_data = {
+            'name': data.get('name'),
+            'email': data.get('email'),
+            'valve': data.get('valve'),
+            'shape': data.get('shape'),
+            'wood': data.get('wood'),
+            'length': f"{data.get('length')}'"
+        }
+        send_notification_email('Surfboard Shower Order', email_data)
+        
         if success:
             return jsonify({'message': 'Surfboard shower order submitted successfully'}), 200
         else:
@@ -107,6 +222,16 @@ def submit_high_voltage_art_form():
         
         # Append to Google Sheets
         success = append_to_sheet('High Voltage Art Projects', sheet_data)
+        
+        # Send email notification
+        email_data = {
+            'name': data.get('name'),
+            'email': data.get('email'),
+            'phone': data.get('phone', ''),
+            'notes': data.get('notes'),
+            'images': 'Images uploaded' if data.get('images') else 'No images'
+        }
+        send_notification_email('High Voltage Art Project', email_data)
         
         if success:
             return jsonify({'message': 'Art project submitted successfully'}), 200
