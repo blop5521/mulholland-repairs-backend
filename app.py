@@ -39,9 +39,17 @@ def get_google_sheets_client():
         creds_json = os.environ.get('GOOGLE_SHEETS_CREDENTIALS')
         if creds_json:
             import json
-            creds_dict = json.loads(creds_json)
+            import base64
+            try:
+                # Try to decode as base64 first
+                decoded = base64.b64decode(creds_json).decode()
+                creds_dict = json.loads(decoded)
+                print("Using base64 encoded credentials from environment variable")
+            except:
+                # Fall back to direct JSON parsing
+                creds_dict = json.loads(creds_json)
+                print("Using direct JSON credentials from environment variable")
             creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
-            print("Using credentials from environment variable")
         else:
             # Fall back to local JSON file for development
             service_account_file = 'jsonk/mulhollandrepairs-3d2050ada0ed.json'
