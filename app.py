@@ -4,6 +4,8 @@ import smtplib
 import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
 from datetime import datetime
 sys.path.insert(0, os.path.dirname(__file__))
 
@@ -86,8 +88,8 @@ def append_to_sheet(sheet_name, data):
         print(f"Error appending to sheet: {e}")
         return False
 
-def send_notification_email(form_type, data):
-    """Send email notification for form submission"""
+def send_notification_email(form_type, data, image_files=None):
+    """Send email notification for form submission with optional image attachments"""
     if not SENDER_EMAIL or not SENDER_PASSWORD:
         print("Email credentials not configured - skipping email notification")
         return True  # Return True to not fail the form submission
@@ -106,11 +108,35 @@ New {form_type} submission received:
 """
         
         for key, value in data.items():
-            body += f"{key.title()}: {value}\n"
+            if key != 'images':  # Skip images in text body since they're attached
+                body += f"{key.title()}: {value}\n"
         
         body += f"\nTimestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         
+        if image_files:
+            body += f"\n\nImages attached: {len(image_files)} file(s)"
+        
         msg.attach(MIMEText(body, 'plain'))
+        
+        # Attach images if provided
+        if image_files:
+            for img in image_files:
+                if img.filename:
+                    # Reset file pointer to beginning
+                    img.seek(0)
+                    
+                    # Create attachment
+                    attachment = MIMEBase('application', 'octet-stream')
+                    attachment.set_payload(img.read())
+                    encoders.encode_base64(attachment)
+                    
+                    # Add header
+                    attachment.add_header(
+                        'Content-Disposition',
+                        f'attachment; filename= {secure_filename(img.filename)}'
+                    )
+                    
+                    msg.attach(attachment)
         
         # Create SSL context
         context = ssl.create_default_context()
@@ -178,7 +204,7 @@ def submit_repair_form():
             'description': data.get('description'),
             'images': image_info
         }
-        email_success = send_notification_email('Repair Request', email_data)
+        email_success = send_notification_email('Repair Request', email_data, images if has_images else None)
         
         if sheets_success:
             return jsonify({'message': 'Repair request submitted successfully'}), 200
@@ -284,7 +310,7 @@ def submit_high_voltage_art_form():
             'notes': data.get('notes'),
             'images': image_info
         }
-        email_success = send_notification_email('High Voltage Art Project', email_data)
+        email_success = send_notification_email('High Voltage Art Project', email_data, images if has_images else None)
         
         if sheets_success:
             return jsonify({'message': 'Art project submitted successfully'}), 200
