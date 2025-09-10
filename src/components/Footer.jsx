@@ -1,4 +1,4 @@
-import { MapPin, Instagram, Facebook, Waves } from 'lucide-react'
+import { MapPin, Instagram, Facebook } from 'lucide-react'
 
 export function Footer() {
   return (
@@ -8,9 +8,13 @@ export function Footer() {
           {/* Company Info */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <div className="bg-gradient-to-r from-blue-600 to-teal-600 p-2 rounded-lg">
-                <Waves className="h-6 w-6 text-white" />
-              </div>
+            <div className="p-2">
+              <img
+                src="/Mulholland-Logo2-Color1000px.png"
+                alt="Mulholland Repairs Logo"
+                className="h-8 w-8 md:h-10 md:w-10 lg:h-12 lg:w-12 object-contain"
+              />
+            </div>
               <div>
                 <div className="font-bold text-xl">Mulholland Repairs</div>
                 <div className="text-sm text-gray-400">Paddlesports Specialists</div>
@@ -18,7 +22,7 @@ export function Footer() {
             </div>
             <p className="text-gray-300 mb-4">
               The Seacoast's only paddlesports focused repair shop, specializing in 
-              e-foil boards, surfboards, SUPs, kayaks, and custom electrical art.
+              e-foil boards, surfboards, SUPs, kayaks, and custom Lichtenberg art.
             </p>
           </div>
 

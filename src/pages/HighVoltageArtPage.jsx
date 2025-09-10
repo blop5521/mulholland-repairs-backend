@@ -26,7 +26,7 @@ export function HighVoltageArtPage() {
     {
       icon: <Lightbulb className="h-8 w-8 text-orange-500" />,
       title: "Paddle Installations",
-      description: "Custom electrical installations using paddles as artistic canvases"
+      description: "Custom Lichtenberg Art using paddles as artistic canvases"
     },
     {
       icon: <Sparkles className="h-8 w-8 text-purple-500" />,
@@ -159,11 +159,29 @@ export function HighVoltageArtPage() {
             Featured Installations
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((item) => (
-              <div key={item} className="aspect-square bg-gradient-to-br from-yellow-100 to-purple-100 rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <Palette className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-                  <p className="text-sm text-gray-500">Art Installation {item}</p>
+            {[
+              { image: '/lichtenbergCoffeeTable1.jpg', title: 'Coffee Table Installation', description: 'Stunning electrical art on reclaimed wood' },
+              { image: '/lichtenbergCoffeeTableSlimeEpoxy.jpg', title: 'Epoxy Coffee Table', description: 'Mixed media with slime epoxy effects' },
+              { image: '/lichtenbergConnorSurfboard.jpg', title: 'Surfboard Lighting', description: 'Illuminated vintage surfboard art' },
+              { image: '/lichtenbergGuitair.jpg', title: 'Guitar Installation', description: 'Musical instrument transformed into light art' },
+              { image: '/lichtenbergInfinity.jpg', title: 'Infinity Design', description: 'Endless patterns in electrical artistry' },
+              { image: '/lichtenbergRifle.jpg', title: 'Rifle Stock Art', description: 'Unique firearm transformed into art piece' },
+              { image: '/lichtenbergPaddlesConnor.jpg', title: 'Paddle Installation', description: 'Custom paddle lighting design' },
+              { image: '/lichtenbergSkateDeck.jpg', title: 'Skate Deck Art', description: 'Street culture meets electrical art' },
+              { image: '/lichtenbergTreeConnor.jpg', title: 'Tree of Life', description: 'Natural forms illuminated with precision' },
+              { image: '/lichtenbergsurfboard_squaretail.jpg', title: 'Square Tail Surfboard', description: 'Classic surfboard transformed into art' }
+            ].map((item, index) => (
+              <div key={index} className="group cursor-pointer">
+                <div className="aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div className="mt-3">
+                  <h3 className="font-semibold text-gray-900 text-sm">{item.title}</h3>
+                  <p className="text-gray-600 text-xs mt-1">{item.description}</p>
                 </div>
               </div>
             ))}
@@ -282,7 +300,7 @@ export function HighVoltageArtPage() {
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             Creative Process
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div className="text-center">
               <div className="bg-gradient-to-br from-yellow-100 to-purple-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
                 <span className="text-purple-600 font-bold text-lg">1</span>
@@ -301,7 +319,7 @@ export function HighVoltageArtPage() {
                 Detailed design with electrical specifications and visual mockups.
               </p>
             </div>
-            <div className="text-center">
+            <div className="text-center sm:col-span-2 lg:col-span-1">
               <div className="bg-gradient-to-br from-yellow-100 to-purple-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
                 <span className="text-purple-600 font-bold text-lg">3</span>
               </div>
@@ -310,31 +328,7 @@ export function HighVoltageArtPage() {
                 Expert craftsmanship brings your electrical art vision to life.
               </p>
             </div>
-            <div className="text-center">
-              <div className="bg-gradient-to-br from-yellow-100 to-purple-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
-                <span className="text-purple-600 font-bold text-lg">4</span>
-              </div>
-              <h3 className="font-semibold text-lg mb-2">Install</h3>
-              <p className="text-gray-600 text-sm">
-                Professional installation ensures safe and stunning results.
-              </p>
             </div>
-          </div>
-        </div>
-
-        {/* Safety Note */}
-        <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-          <div className="flex items-start space-x-3">
-            <Zap className="h-6 w-6 text-yellow-600 mt-0.5 flex-shrink-0" />
-            <div>
-              <h3 className="font-semibold text-yellow-800 mb-2">Safety & Quality Assurance</h3>
-              <p className="text-yellow-700 text-sm">
-                All electrical art installations are designed and installed by qualified professionals 
-                following local electrical codes and safety standards. We prioritize both artistic 
-                vision and electrical safety in every project.
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </div>

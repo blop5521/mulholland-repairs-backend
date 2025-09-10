@@ -20,18 +20,18 @@ export function SurfboardShowersPage() {
   const [isSubmitted, setIsSubmitted] = useState(false)
 
   const valveOptions = [
-    { id: 'stainless', name: 'Stainless Steel', image: '/api/placeholder/150/150' },
-    { id: 'black', name: 'Black', image: '/api/placeholder/150/150' },
-    { id: 'brass', name: 'Brushed Brass', image: '/api/placeholder/150/150' },
-    { id: 'gold', name: 'Polished Gold', image: '/api/placeholder/150/150' },
-    { id: 'rose', name: 'Rose Gold', image: '/api/placeholder/150/150' }
+    { id: 'stainless', name: 'Stainless Steel', image: '/stainless_steel.jpeg' },
+    { id: 'black', name: 'Black', image: '/black.jpeg' },
+    { id: 'brass', name: 'Brushed Brass', image: '/brushed_brass.jpeg' },
+    { id: 'gold', name: 'Polished Gold', image: '/gold.jpeg' },
+    { id: 'rose', name: 'Rose Gold', image: '/rose_gold.jpeg' }
   ]
 
   const shapeOptions = [
-    { id: 'pin', name: 'Pin Tail', image: '/api/placeholder/150/200' },
-    { id: 'fish', name: 'Fish Tail', image: '/api/placeholder/150/200' },
-    { id: 'round', name: 'Round Tail', image: '/api/placeholder/150/200' },
-    { id: 'square', name: 'Square Tail', image: '/api/placeholder/150/200' }
+    { id: 'pin', name: 'Pin Tail', image: '/lichtenbergShowerPinTail.jpg' },
+    { id: 'fish', name: 'Fish Tail', image: '/lichtenbergShowerPintail2.jpg' },
+    { id: 'round', name: 'Round Tail', image: '/lichtenbergShowerRoundTail.jpg' },
+    { id: 'square', name: 'Square Tail', image: '/lichtenbergShowerSquareTail.jpg' }
   ]
 
   const woodOptions = [
@@ -256,8 +256,12 @@ export function SurfboardShowersPage() {
                         }`}
                         onClick={() => handleValveSelect(valve.id)}
                       >
-                        <div className="w-full h-20 bg-gray-100 rounded mb-2 flex items-center justify-center">
-                          <span className="text-xs text-gray-500">Valve Image</span>
+                        <div className="w-full h-20 bg-gray-100 rounded mb-2 flex items-center justify-center overflow-hidden">
+                          <img
+                            src={valve.image}
+                            alt={valve.name}
+                            className="w-full h-full object-cover"
+                          />
                         </div>
                         <p className="text-sm font-medium">{valve.name}</p>
                       </div>
@@ -279,8 +283,12 @@ export function SurfboardShowersPage() {
                         }`}
                         onClick={() => handleShapeSelect(shape.id)}
                       >
-                        <div className="w-full h-32 bg-gray-100 rounded mb-2 flex items-center justify-center">
-                          <span className="text-xs text-gray-500">Shape Image</span>
+                        <div className="w-full h-32 bg-gray-100 rounded mb-2 flex items-center justify-center overflow-hidden">
+                          <img
+                            src={shape.image}
+                            alt={shape.name}
+                            className="w-full h-full object-cover object-right"
+                          />
                         </div>
                         <p className="text-sm font-medium">{shape.name}</p>
                       </div>
@@ -345,7 +353,7 @@ export function SurfboardShowersPage() {
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             Custom Order Process
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div className="text-center">
               <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
                 <span className="text-blue-600 font-bold text-lg">1</span>
@@ -364,22 +372,13 @@ export function SurfboardShowersPage() {
                 Receive a detailed quote with materials, labor, and timeline.
               </p>
             </div>
-            <div className="text-center">
+            <div className="text-center sm:col-span-2 lg:col-span-1">
               <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
                 <span className="text-blue-600 font-bold text-lg">3</span>
               </div>
               <h3 className="font-semibold text-lg mb-2">Craft</h3>
               <p className="text-gray-600 text-sm">
                 Expert craftsmanship brings your custom shower to life.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
-                <span className="text-blue-600 font-bold text-lg">4</span>
-              </div>
-              <h3 className="font-semibold text-lg mb-2">Install</h3>
-              <p className="text-gray-600 text-sm">
-                Professional installation ensures perfect function and finish.
               </p>
             </div>
           </div>

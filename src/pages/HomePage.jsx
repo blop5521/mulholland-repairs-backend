@@ -8,7 +8,7 @@ export function HomePage() {
     {
       icon: <Wrench className="h-8 w-8 text-blue-600" />,
       title: "Repair Services",
-      description: "Expert repair for kayaks, canoes, standup paddleboards (SUPs), e-foil boards, and surfboards.",
+      description: "Expert repair for kayaks, canoes, standup paddleboards, e-foil boards, and surfboards.",
       link: "/repair",
       features: ["Kayaks", "Canoes", "All paddlesports equipment"]
     },
@@ -22,9 +22,9 @@ export function HomePage() {
     {
       icon: <Zap className="h-8 w-8 text-orange-600" />,
       title: "High Voltage Art",
-      description: "Unique electrical art installations using surfboards and paddles as creative canvases.",
+      description: "Unique Lichtenberg art installations using surfboards and paddles as creative canvases.",
       link: "/high-voltage-art",
-      features: ["Custom electrical art", "Surfboard installations", "Unique lighting designs"]
+      features: ["Custom Lichtenberg art", "Coffee Tables", "Custom Fractal Colors"]
     }
   ]
 
@@ -42,7 +42,7 @@ export function HomePage() {
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
-              Expert repair services, custom surfboard showers, and unique electrical art installations. 
+              Expert repair services, custom surfboard showers, and unique Lichtenberg art. 
               Serving the New England paddlesports community with precision and passion.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -66,7 +66,7 @@ export function HomePage() {
               Our Specialized Services
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              From precision repairs to custom installations, we bring expertise and craftsmanship 
+              From precision repairs to custom Lichtenberg Art, we bring expertise and craftsmanship 
               to every project in the paddlesports world.
             </p>
           </div>
@@ -99,6 +99,77 @@ export function HomePage() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Premier Accounts Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Premier Accounts We Maintain
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              As the trusted repair partner for New England's premier paddlesports retailers, 
+              we provide expert maintenance and repair services that keep their equipment performing at its best.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <a href="https://paddleboston.com/" target="_blank" rel="noopener noreferrer" className="group block">
+              <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer">
+                <div className="aspect-video relative overflow-hidden">
+                  <img
+                    src="/paddleBostong.jpeg"
+                    alt="Paddle Boston - Premier Account"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <h3 className="text-white text-2xl font-bold mb-2">Paddle Boston</h3>
+                    <p className="text-blue-100 text-sm">Premium paddlesports equipment specialist</p>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <p className="text-gray-600 mb-4">
+                    We proudly maintain Paddle Boston's extensive inventory of high-end kayaks, canoes, and standup paddleboards, 
+                    ensuring their customers receive the best possible equipment performance.
+                  </p>
+                  <div className="flex items-center text-blue-600 font-semibold">
+                    <span>Visit Website</span>
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            <a href="https://www.paddlelincoln.com/" target="_blank" rel="noopener noreferrer" className="group block">
+              <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer">
+                <div className="aspect-video relative overflow-hidden">
+                  <img
+                    src="/lincolnCanoeKayak.jpeg"
+                    alt="Lincoln Canoe and Kayak - Premier Account"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <h3 className="text-white text-2xl font-bold mb-2">Lincoln Canoe & Kayak</h3>
+                    <p className="text-blue-100 text-sm">Leading watersports retailer in the Northeast</p>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <p className="text-gray-600 mb-4">
+                    As Lincoln Canoe & Kayak's dedicated repair partner, we provide comprehensive maintenance services 
+                    that keep their premium fleet in top condition for their discerning customers.
+                  </p>
+                  <div className="flex items-center text-blue-600 font-semibold">
+                    <span>Visit Website</span>
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </div>
+                </div>
+              </div>
+            </a>
           </div>
         </div>
       </section>
