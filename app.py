@@ -149,13 +149,22 @@ def submit_repair_form():
             if not data.get(field):
                 return jsonify({'error': f'{field} is required'}), 400
         
+        # Process images and get filenames
+        image_info = 'No images'
+        if has_images:
+            image_names = [secure_filename(img.filename) for img in images if img.filename]
+            if image_names:
+                image_info = f"Images: {', '.join(image_names)}"
+            else:
+                image_info = 'Images uploaded (no filenames)'
+        
         # Prepare data for Google Sheets
         sheet_data = [
             data.get('name'),
             data.get('email'),
             data.get('phone', ''),
             data.get('description'),
-            'Images uploaded' if has_images else 'No images'
+            image_info
         ]
         
         # Append to Google Sheets
@@ -167,7 +176,7 @@ def submit_repair_form():
             'email': data.get('email'),
             'phone': data.get('phone', ''),
             'description': data.get('description'),
-            'images': 'Images uploaded' if has_images else 'No images'
+            'images': image_info
         }
         email_success = send_notification_email('Repair Request', email_data)
         
@@ -246,13 +255,22 @@ def submit_high_voltage_art_form():
             if not data.get(field):
                 return jsonify({'error': f'{field} is required'}), 400
         
+        # Process images and get filenames
+        image_info = 'No images'
+        if has_images:
+            image_names = [secure_filename(img.filename) for img in images if img.filename]
+            if image_names:
+                image_info = f"Images: {', '.join(image_names)}"
+            else:
+                image_info = 'Images uploaded (no filenames)'
+        
         # Prepare data for Google Sheets
         sheet_data = [
             data.get('name'),
             data.get('email'),
             data.get('phone', ''),
             data.get('notes'),
-            'Images uploaded' if has_images else 'No images'
+            image_info
         ]
         
         # Append to Google Sheets
@@ -264,7 +282,7 @@ def submit_high_voltage_art_form():
             'email': data.get('email'),
             'phone': data.get('phone', ''),
             'notes': data.get('notes'),
-            'images': 'Images uploaded' if has_images else 'No images'
+            'images': image_info
         }
         email_success = send_notification_email('High Voltage Art Project', email_data)
         
