@@ -7,22 +7,22 @@ export function ContactPage() {
       icon: <Mail className="h-6 w-6 text-blue-600" />,
       title: "Email",
       description: "Best for detailed inquiries and project discussions",
-      contact: "info@mulhollandrepairs.com",
-      action: "mailto:info@mulhollandrepairs.com"
+      contact: "mulhollandsurfboards@gmail.com",
+      action: "mailto:mulhollandsurfboards@gmail.com"
     },
     {
       icon: <Phone className="h-6 w-6 text-green-600" />,
       title: "Phone",
       description: "For urgent repairs and quick questions",
-      contact: "(555) 123-4567",
-      action: "tel:+15551234567"
+      contact: "(978) 971-6007",
+      action: "tel:+9789716007"
     },
     {
       icon: <Instagram className="h-6 w-6 text-pink-600" />,
       title: "Instagram",
       description: "Follow our latest projects and repairs",
-      contact: "@mulhollandrepairs",
-      action: "#"
+      contact: "@mulholland_repairs",
+      action: "https://www.instagram.com/mulholland_repairs/"
     }
   ]
 
@@ -132,33 +132,27 @@ export function ContactPage() {
               <CardContent>
                 <div className="space-y-3">
                   <a 
-                    href="#" 
+                    href="https://www.instagram.com/mulholland_repairs/" 
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
                   >
                     <Instagram className="h-6 w-6 text-pink-600" />
                     <div>
                       <p className="font-medium text-gray-900">Mulholland Repairs</p>
-                      <p className="text-sm text-gray-600">@mulhollandrepairs</p>
+                      <p className="text-sm text-gray-600">@mulholland_repairs</p>
                     </div>
                   </a>
                   <a 
-                    href="#" 
-                    className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    <Facebook className="h-6 w-6 text-blue-600" />
-                    <div>
-                      <p className="font-medium text-gray-900">Mulholland Repairs</p>
-                      <p className="text-sm text-gray-600">Facebook Page</p>
-                    </div>
-                  </a>
-                  <a 
-                    href="#" 
+                    href="https://www.instagram.com/mulholland_high_voltage_art/" 
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
                   >
                     <Instagram className="h-6 w-6 text-purple-600" />
                     <div>
                       <p className="font-medium text-gray-900">Mulholland High Voltage</p>
-                      <p className="text-sm text-gray-600">@mulhollandhighvoltage</p>
+                      <p className="text-sm text-gray-600">@mulholland_high_voltage_art</p>
                     </div>
                   </a>
                 </div>
@@ -205,49 +199,16 @@ export function ContactPage() {
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Do you offer pickup and delivery?</h4>
-                    <p className="text-gray-600 text-sm">
-                      We can arrange pickup and delivery for larger items or customers 
-                      in the local area. Contact us to discuss options.
-                    </p>
-                  </div>
-                  <div>
                     <h4 className="font-semibold text-gray-900 mb-1">What's included in a repair quote?</h4>
                     <p className="text-gray-600 text-sm">
                       All quotes include materials, labor, and estimated completion time. 
                       No hidden fees or surprise charges.
                     </p>
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Can you work with insurance claims?</h4>
-                    <p className="text-gray-600 text-sm">
-                      Yes, we can provide detailed documentation and work with insurance 
-                      companies for covered damage claims.
-                    </p>
-                  </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Emergency Contact */}
-            <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
-              <div className="flex items-start space-x-3">
-                <Phone className="h-6 w-6 text-orange-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-orange-800 mb-2">Emergency Repairs</h3>
-                  <p className="text-orange-700 text-sm mb-2">
-                    For urgent repairs that affect safety or prevent you from getting on the water, 
-                    call us directly. We'll do our best to accommodate emergency situations.
-                  </p>
-                  <a 
-                    href="tel:+15551234567"
-                    className="text-orange-600 hover:text-orange-700 font-medium transition-colors"
-                  >
-                    (555) 123-4567
-                  </a>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

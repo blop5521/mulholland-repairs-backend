@@ -56,18 +56,22 @@ export function HighVoltageArtPage() {
     setIsSubmitting(true)
     
     try {
-      const response = await fetch('https://mulholland-repairs-api.onrender.com/api/forms/high-voltage-art', {
+      const formDataToSend = new FormData()
+      formDataToSend.append('name', formData.name)
+      formDataToSend.append('email', formData.email)
+      formDataToSend.append('phone', formData.phone)
+      formDataToSend.append('notes', formData.notes)
+      
+      // Add images to FormData
+      if (formData.images.length > 0) {
+        for (let i = 0; i < formData.images.length; i++) {
+          formDataToSend.append('images', formData.images[i])
+        }
+      }
+
+      const response = await fetch('https://mulholland-backend.onrender.com/api/forms/high-voltage-art', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          notes: formData.notes,
-          images: formData.images.length > 0 ? 'Images uploaded' : null
-        })
+        body: formDataToSend
       })
       
       if (response.ok) {

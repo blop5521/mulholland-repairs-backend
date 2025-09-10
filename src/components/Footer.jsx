@@ -46,21 +46,18 @@ export function Footer() {
             <h3 className="font-semibold text-lg mb-4">Follow Us</h3>
             <div className="space-y-3">
               <a 
-                href="#" 
+                href="https://www.instagram.com/mulholland_repairs/" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors"
               >
                 <Instagram className="h-5 w-5" />
                 <span>Mulholland Repairs IG</span>
               </a>
               <a 
-                href="#" 
-                className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors"
-              >
-                <Facebook className="h-5 w-5" />
-                <span>Mulholland Repairs Facebook</span>
-              </a>
-              <a 
-                href="#" 
+                href="https://www.instagram.com/mulholland_high_voltage_art/" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors"
               >
                 <Instagram className="h-5 w-5" />

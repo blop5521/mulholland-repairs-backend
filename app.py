@@ -35,16 +35,25 @@ SENDER_PASSWORD = os.environ.get('GMAIL_APP_PASSWORD')
 def get_google_sheets_client():
     """Initialize Google Sheets client with service account credentials"""
     try:
-        # Get credentials from environment variable (JSON string)
-        creds_json = os.environ.get('GOOGLE_SHEETS_CREDENTIALS')
-        if not creds_json:
-            print("GOOGLE_SHEETS_CREDENTIALS environment variable not found")
-            return None
-            
-        import json
-        creds_dict = json.loads(creds_json)
-        creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
+        # Try to get credentials from environment variable first
+        creds_json = os.environ.get('google_sheets_credential')
+        if creds_json:
+            import json
+            creds_dict = json.loads(creds_json)
+            creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
+            print("Using credentials from environment variable")
+        else:
+            # Fall back to local JSON file for development
+            service_account_file = 'jsonk/mulhollandrepairs-3d2050ada0ed.json'
+            if os.path.exists(service_account_file):
+                print(f"Using credentials from file: {service_account_file}")
+                creds = Credentials.from_service_account_file(service_account_file, scopes=SCOPES)
+            else:
+                print("No Google Sheets credentials found")
+                return None
+                
         client = gspread.authorize(creds)
+        print("Google Sheets client authorized successfully")
         return client
     except Exception as e:
         print(f"Error initializing Google Sheets client: {e}")
@@ -72,8 +81,8 @@ def append_to_sheet(sheet_name, data):
 def send_notification_email(form_type, data):
     """Send email notification for form submission"""
     if not SENDER_EMAIL or not SENDER_PASSWORD:
-        print("Email credentials not configured")
-        return False
+        print("Email credentials not configured - skipping email notification")
+        return True  # Return True to not fail the form submission
     
     try:
         # Create message
@@ -109,7 +118,7 @@ New {form_type} submission received:
         
     except Exception as e:
         print(f"Error sending email notification: {e}")
-        return False
+        return True  # Return True to not fail the form submission
 
 @app.route('/api/forms/repair', methods=['POST'])
 def submit_repair_form():
@@ -142,7 +151,7 @@ def submit_repair_form():
         ]
         
         # Append to Google Sheets
-        success = append_to_sheet('Repair Requests', sheet_data)
+        sheets_success = append_to_sheet('Mulholland Repairs (Responses)', sheet_data)
         
         # Send email notification
         email_data = {
@@ -152,9 +161,9 @@ def submit_repair_form():
             'description': data.get('description'),
             'images': 'Images uploaded' if has_images else 'No images'
         }
-        send_notification_email('Repair Request', email_data)
+        email_success = send_notification_email('Repair Request', email_data)
         
-        if success:
+        if sheets_success:
             return jsonify({'message': 'Repair request submitted successfully'}), 200
         else:
             return jsonify({'error': 'Failed to submit request'}), 500
@@ -186,7 +195,7 @@ def submit_surfboard_shower_form():
         ]
         
         # Append to Google Sheets
-        success = append_to_sheet('Surfboard Shower Orders', sheet_data)
+        sheets_success = append_to_sheet('Surfboard Shower (Responses)', sheet_data)
         
         # Send email notification
         email_data = {
@@ -197,9 +206,9 @@ def submit_surfboard_shower_form():
             'wood': data.get('wood'),
             'length': f"{data.get('length')}'"
         }
-        send_notification_email('Surfboard Shower Order', email_data)
+        email_success = send_notification_email('Surfboard Shower Order', email_data)
         
-        if success:
+        if sheets_success:
             return jsonify({'message': 'Surfboard shower order submitted successfully'}), 200
         else:
             return jsonify({'error': 'Failed to submit order'}), 500
@@ -239,7 +248,7 @@ def submit_high_voltage_art_form():
         ]
         
         # Append to Google Sheets
-        success = append_to_sheet('High Voltage Art Projects', sheet_data)
+        sheets_success = append_to_sheet('Mulholland High Voltage (Responses)', sheet_data)
         
         # Send email notification
         email_data = {
@@ -249,9 +258,9 @@ def submit_high_voltage_art_form():
             'notes': data.get('notes'),
             'images': 'Images uploaded' if has_images else 'No images'
         }
-        send_notification_email('High Voltage Art Project', email_data)
+        email_success = send_notification_email('High Voltage Art Project', email_data)
         
-        if success:
+        if sheets_success:
             return jsonify({'message': 'Art project submitted successfully'}), 200
         else:
             return jsonify({'error': 'Failed to submit project'}), 500
@@ -266,5 +275,5 @@ def health_check():
     return jsonify({'status': 'healthy', 'message': 'Mulholland Repairs API is running'})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)
 

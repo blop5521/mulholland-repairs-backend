@@ -212,13 +212,9 @@ export function HomePage() {
                 <div className="mt-6 pt-6 border-t border-blue-400">
                   <h4 className="font-semibold mb-3">Follow Our Work</h4>
                   <div className="flex space-x-4">
-                    <a href="#" className="flex items-center text-blue-100 hover:text-white transition-colors">
+                    <a href="https://www.instagram.com/mulholland_repairs/" target="_blank" rel="noopener noreferrer" className="flex items-center text-blue-100 hover:text-white transition-colors">
                       <Instagram className="h-5 w-5 mr-2" />
                       <span className="text-sm">Instagram</span>
-                    </a>
-                    <a href="#" className="flex items-center text-blue-100 hover:text-white transition-colors">
-                      <Facebook className="h-5 w-5 mr-2" />
-                      <span className="text-sm">Facebook</span>
                     </a>
                   </div>
                 </div>

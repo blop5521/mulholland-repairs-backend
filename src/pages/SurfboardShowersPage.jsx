@@ -89,7 +89,7 @@ export function SurfboardShowersPage() {
     setIsSubmitting(true)
     
     try {
-      const response = await fetch('https://mulholland-repairs-api.onrender.com/api/forms/surfboard-showers', {
+      const response = await fetch('https://mulholland-backend.onrender.com/api/forms/surfboard-showers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
