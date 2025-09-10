@@ -115,7 +115,16 @@ New {form_type} submission received:
 def submit_repair_form():
     """Handle repair form submissions"""
     try:
-        data = request.get_json()
+        # Check if this is FormData (with files) or JSON
+        if request.content_type and 'multipart/form-data' in request.content_type:
+            # Handle FormData request
+            data = request.form.to_dict()
+            images = request.files.getlist('images')
+            has_images = len(images) > 0
+        else:
+            # Handle JSON request
+            data = request.get_json()
+            has_images = data.get('images', False)
         
         # Validate required fields
         required_fields = ['name', 'email', 'description']
@@ -129,7 +138,7 @@ def submit_repair_form():
             data.get('email'),
             data.get('phone', ''),
             data.get('description'),
-            'Images uploaded' if data.get('images') else 'No images'
+            'Images uploaded' if has_images else 'No images'
         ]
         
         # Append to Google Sheets
@@ -141,7 +150,7 @@ def submit_repair_form():
             'email': data.get('email'),
             'phone': data.get('phone', ''),
             'description': data.get('description'),
-            'images': 'Images uploaded' if data.get('images') else 'No images'
+            'images': 'Images uploaded' if has_images else 'No images'
         }
         send_notification_email('Repair Request', email_data)
         
@@ -203,7 +212,16 @@ def submit_surfboard_shower_form():
 def submit_high_voltage_art_form():
     """Handle high voltage art form submissions"""
     try:
-        data = request.get_json()
+        # Check if this is FormData (with files) or JSON
+        if request.content_type and 'multipart/form-data' in request.content_type:
+            # Handle FormData request
+            data = request.form.to_dict()
+            images = request.files.getlist('images')
+            has_images = len(images) > 0
+        else:
+            # Handle JSON request
+            data = request.get_json()
+            has_images = data.get('images', False)
         
         # Validate required fields
         required_fields = ['name', 'email', 'notes']
@@ -217,7 +235,7 @@ def submit_high_voltage_art_form():
             data.get('email'),
             data.get('phone', ''),
             data.get('notes'),
-            'Images uploaded' if data.get('images') else 'No images'
+            'Images uploaded' if has_images else 'No images'
         ]
         
         # Append to Google Sheets
@@ -229,7 +247,7 @@ def submit_high_voltage_art_form():
             'email': data.get('email'),
             'phone': data.get('phone', ''),
             'notes': data.get('notes'),
-            'images': 'Images uploaded' if data.get('images') else 'No images'
+            'images': 'Images uploaded' if has_images else 'No images'
         }
         send_notification_email('High Voltage Art Project', email_data)
         
