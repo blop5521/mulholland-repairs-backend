@@ -231,6 +231,7 @@ def submit_surfboard_shower_form():
         sheet_data = [
             data.get('name'),
             data.get('email'),
+            data.get('phone', ''),
             data.get('valve'),
             data.get('shape'),
             data.get('wood'),
@@ -244,6 +245,7 @@ def submit_surfboard_shower_form():
         email_data = {
             'name': data.get('name'),
             'email': data.get('email'),
+            'phone': data.get('phone', ''),
             'valve': data.get('valve'),
             'shape': data.get('shape'),
             'wood': data.get('wood'),
