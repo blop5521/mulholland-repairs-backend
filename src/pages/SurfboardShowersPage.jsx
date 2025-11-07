@@ -11,6 +11,7 @@ export function SurfboardShowersPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     valve: '',
     shape: '',
     wood: '',
@@ -28,10 +29,10 @@ export function SurfboardShowersPage() {
   ]
 
   const shapeOptions = [
-    { id: 'pin', name: 'Pin Tail', image: '/lichtenbergShowerPinTail.jpg' },
-    { id: 'fish', name: 'Fish Tail', image: '/lichtenbergShowerPintail2.jpg' },
-    { id: 'round', name: 'Round Tail', image: '/lichtenbergShowerRoundTail.jpg' },
-    { id: 'square', name: 'Square Tail', image: '/lichtenbergShowerSquareTail.jpg' }
+    { id: 'pin', name: 'Pin Tail', image: '/pin_tail.jpeg' },
+    { id: 'fish', name: 'Fish Tail', image: '/fish_tail.jpeg' },
+    { id: 'round', name: 'Round Tail', image: '/round_tail.jpeg' },
+    { id: 'square', name: 'Square Tail', image: '/square_tail.jpeg' }
   ]
 
   const woodOptions = [
@@ -81,6 +82,10 @@ export function SurfboardShowersPage() {
   const formatLength = (length) => {
     const feet = Math.floor(length)
     const inches = Math.round((length - feet) * 12)
+    // Handle edge case where rounding gives us 12 inches
+    if (inches === 12) {
+      return `${feet + 1}'0"`
+    }
     return `${feet}'${inches}"`
   }
 
@@ -97,6 +102,7 @@ export function SurfboardShowersPage() {
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
+          phone: formData.phone,
           valve: formData.valve,
           shape: formData.shape,
           wood: formData.wood,
@@ -136,6 +142,7 @@ export function SurfboardShowersPage() {
               setFormData({
                 name: '',
                 email: '',
+                phone: '',
                 valve: '',
                 shape: '',
                 wood: '',
@@ -242,6 +249,18 @@ export function SurfboardShowersPage() {
                   </div>
                 </div>
 
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone Number (Optional)</Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="(555) 123-4567"
+                  />
+                </div>
+
                 {/* Valve Options */}
                 <div className="space-y-4">
                   <Label className="text-lg font-semibold">Valve Finish *</Label>
@@ -299,18 +318,21 @@ export function SurfboardShowersPage() {
                 {/* Wood Type */}
                 <div className="space-y-2">
                   <Label htmlFor="wood" className="text-lg font-semibold">Wood Type *</Label>
-                  <Select value={formData.wood} onValueChange={handleWoodChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select wood type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {woodOptions.map((wood) => (
-                        <SelectItem key={wood.value} value={wood.value}>
-                          {wood.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <select
+                    id="wood"
+                    name="wood"
+                    value={formData.wood}
+                    onChange={(e) => handleWoodChange(e.target.value)}
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">Select wood type</option>
+                    {woodOptions.map((wood) => (
+                      <option key={wood.value} value={wood.value}>
+                        {wood.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 {/* Board Length */}
@@ -318,19 +340,20 @@ export function SurfboardShowersPage() {
                   <Label className="text-lg font-semibold">Board Length *</Label>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm text-gray-600">
-                      <span>5'10"</span>
+                      <span>5'0"</span>
                       <span className="font-semibold text-lg text-blue-600">
                         {formatLength(formData.length[0])}
                       </span>
-                      <span>7'6"</span>
+                      <span>8'0"</span>
                     </div>
-                    <Slider
-                      value={formData.length}
-                      onValueChange={handleLengthChange}
-                      min={5.83} // 5'10"
-                      max={7.5}  // 7'6"
-                      step={0.08} // 1 inch increments
-                      className="w-full"
+                    <input
+                      type="range"
+                      min="5.0"
+                      max="8.0"
+                      step="0.1"
+                      value={formData.length[0]}
+                      onChange={(e) => handleLengthChange([parseFloat(e.target.value)])}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
                     />
                   </div>
                 </div>

@@ -60,11 +60,12 @@ export function AboutPage() {
               </div>
             </div>
             <div className="relative">
-              <div className="aspect-square bg-gradient-to-br from-blue-100 to-teal-100 rounded-2xl flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin className="h-16 w-16 text-blue-600 mx-auto mb-4" />
-                  <p className="text-gray-600">Workshop Photo</p>
-                </div>
+              <div className="aspect-square rounded-2xl overflow-hidden shadow-lg">
+                <img 
+                  src="/workshop_oakley.png" 
+                  alt="Connor's workshop at Mulholland Repairs"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
           </div>
@@ -183,9 +184,12 @@ export function AboutPage() {
               </div>
             </div>
             <div className="text-center">
-              <div className="bg-white/10 rounded-xl p-8">
-                <MapPin className="h-16 w-16 mx-auto mb-4 text-blue-200" />
-                <p className="text-blue-100">Interactive Map Coming Soon</p>
+              <div className="rounded-xl overflow-hidden shadow-lg">
+                <img 
+                  src="/workshop_arial.png" 
+                  alt="Aerial view of Mulholland Repairs workshop"
+                  className="w-full h-64 object-cover"
+                />
               </div>
             </div>
           </div>

@@ -249,11 +249,15 @@ export function RepairPage() {
                       onChange={handleFileChange}
                       className="hidden"
                     />
-                    <Label htmlFor="images" className="cursor-pointer">
-                      <Button type="button" variant="outline" size="sm">
-                        Choose Files
-                      </Button>
-                    </Label>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => document.getElementById('images').click()}
+                      className="cursor-pointer"
+                    >
+                      Choose Files
+                    </Button>
                     {formData.images.length > 0 && (
                       <p className="text-sm text-green-600 mt-2">
                         {formData.images.length} file(s) selected
