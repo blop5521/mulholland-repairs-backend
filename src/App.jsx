@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Navigation } from './components/Navigation'
 import { Footer } from './components/Footer'
+import { ScrollToTop } from './components/ScrollToTop'
+import { AnalyticsEvents } from './components/AnalyticsEvents'
 import { HomePage } from './pages/HomePage'
 import { RepairPage } from './pages/RepairPage'
 import { SurfboardShowersPage } from './pages/SurfboardShowersPage'
@@ -13,6 +15,8 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+        <ScrollToTop />
+        <AnalyticsEvents />
         <Navigation />
         <main>
           <Routes>
