@@ -1,10 +1,20 @@
-import { MapPin, Instagram, Facebook } from 'lucide-react'
+import { MapPin, Instagram } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 export function Footer() {
+  const navItems = [
+    { path: '/', label: 'Home' },
+    { path: '/repair', label: 'Repair Services' },
+    { path: '/surfboard-showers', label: 'Surfboard Showers' },
+    { path: '/high-voltage-art', label: 'High Voltage Art' },
+    { path: '/about', label: 'About' },
+    { path: '/contact', label: 'Contact' }
+  ]
+
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
@@ -32,11 +42,17 @@ export function Footer() {
             <div className="space-y-3">
               <div className="flex items-start space-x-2">
                 <MapPin className="h-5 w-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                <div className="text-gray-300">
-                  <div>72 Coffin Ave</div>
-                  <div>Marianna's Marina, Unit A15</div>
-                  <div>Haverhill, MA</div>
-                </div>
+                <a
+                  href="https://www.google.com/maps/dir/?api=1&destination=72+Coffin+Ave,+Haverhill,+MA"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-analytics="footer-address"
+                  className="text-gray-300 hover:text-blue-400 transition-colors leading-relaxed"
+                >
+                  <span className="block">72 Coffin Ave</span>
+                  <span className="block">Marianna's Marina, Unit A15</span>
+                  <span className="block">Haverhill, MA</span>
+                </a>
               </div>
             </div>
           </div>
@@ -64,6 +80,22 @@ export function Footer() {
                 <span>Mulholland High Voltage IG</span>
               </a>
             </div>
+          </div>
+
+          {/* Navigation */}
+          <div>
+            <h3 className="font-semibold text-lg mb-4">Explore</h3>
+            <nav className="space-y-3">
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className="block text-gray-300 hover:text-blue-400 transition-colors text-sm"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
           </div>
         </div>
 

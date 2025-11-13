@@ -103,9 +103,28 @@ export function ContactPage() {
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <p className="font-semibold text-gray-900">Marianna's Marina</p>
-                    <p className="text-gray-600">72 Coffin Ave, Unit A15</p>
-                    <p className="text-gray-600">Haverhill, MA</p>
+                    <a
+                      href="https://www.google.com/maps/dir/?api=1&destination=72+Coffin+Ave,+Haverhill,+MA"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-left text-gray-600 hover:text-blue-600 transition-colors"
+                      data-analytics="contact-address"
+                    >
+                      <span className="block font-semibold text-gray-900">Marianna's Marina</span>
+                      <span className="block">72 Coffin Ave, Unit A15</span>
+                      <span className="block">Haverhill, MA</span>
+                    </a>
+                    <div className="mt-3">
+                      <a
+                        href="https://www.google.com/maps/dir/?api=1&destination=72+Coffin+Ave,+Haverhill,+MA"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
+                        data-analytics="contact-directions-button"
+                      >
+                        Get Directions
+                      </a>
+                    </div>
                   </div>
                   <div className="bg-blue-50 rounded-lg p-4">
                     <div className="flex items-start space-x-2">
