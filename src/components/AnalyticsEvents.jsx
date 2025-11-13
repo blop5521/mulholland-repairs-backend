@@ -108,9 +108,12 @@ export function AnalyticsEvents() {
         return
       }
 
-      if (href.includes('instagram.com')) {
+      const isInstagram = href.includes('instagram.com')
+      const isFacebook = href.includes('facebook.com')
+
+      if (isInstagram || isFacebook) {
         trackClick('social_click', {
-          platform: 'instagram',
+          platform: isInstagram ? 'instagram' : 'facebook',
           account_type: href.includes('mulholland_high_voltage_art')
             ? 'high_voltage_art'
             : 'main',
