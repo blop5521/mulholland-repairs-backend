@@ -1,18 +1,21 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
 export function AnalyticsEvents() {
-  useEffect(() => {
+  const location = useLocation()
+
+  const trackEvent = useCallback((eventName, eventData) => {
     window.dataLayer = window.dataLayer || []
 
-    const trackClick = (eventName, eventData) => {
-      window.dataLayer.push({
-        event: eventName,
-        page_location: window.location.pathname,
-        timestamp: new Date().toISOString(),
-        ...eventData
-      })
-    }
+    window.dataLayer.push({
+      event: eventName,
+      page_location: window.location.pathname,
+      timestamp: new Date().toISOString(),
+      ...eventData
+    })
+  }, [])
 
+  useEffect(() => {
     const getButtonLocation = (element) => {
       const rect = element.getBoundingClientRect()
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop
@@ -25,13 +28,19 @@ export function AnalyticsEvents() {
     }
 
     const handleClick = (event) => {
-      const target = event.target.closest('a')
+      const clickedElement = event.target instanceof Element ? event.target : null
+      if (!clickedElement) return
+
+      const target = clickedElement.closest('a')
       if (!target) return
 
       const href = target.getAttribute('href') || ''
       const text = target.textContent.trim()
       const normalizedText = text.toLowerCase()
       const analyticsTag = target.dataset.analytics || ''
+      const ctaType = target.dataset.ctaType
+      const buttonLocation = target.dataset.buttonLocation
+      const serviceType = target.dataset.serviceType
 
       if (href.includes('google.com/maps')) {
         let locationType = 'general'
@@ -44,10 +53,20 @@ export function AnalyticsEvents() {
           locationType = 'contact_directions_button'
         }
 
-        trackClick('location_directions_click', {
+        trackEvent('location_directions_click', {
           location_type: locationType,
           link_text: text,
           destination: href
+        })
+        return
+      }
+
+      if (ctaType) {
+        trackEvent('cta_click', {
+          cta_type: ctaType,
+          button_text: text,
+          button_location: buttonLocation || getButtonLocation(target),
+          ...(serviceType ? { service_type: serviceType } : {})
         })
         return
       }
@@ -56,7 +75,7 @@ export function AnalyticsEvents() {
         normalizedText.includes('repair quote') ||
         (href === '/repair' && normalizedText.includes('quote'))
       ) {
-        trackClick('cta_click', {
+        trackEvent('cta_click', {
           cta_type: 'repair_quote',
           button_text: text,
           button_location: getButtonLocation(target)
@@ -68,7 +87,7 @@ export function AnalyticsEvents() {
         (normalizedText.includes('contact') || normalizedText.includes('get in touch')) &&
         href === '/contact'
       ) {
-        trackClick('cta_click', {
+        trackEvent('cta_click', {
           cta_type: 'contact',
           button_text: text,
           button_location: getButtonLocation(target)
@@ -77,9 +96,10 @@ export function AnalyticsEvents() {
       }
 
       if (target.closest('nav')) {
-        trackClick('nav_click', {
+        trackEvent('nav_click', {
           nav_item: text,
-          destination: href
+          destination: href,
+          nav_location: target.closest('footer') ? 'footer' : 'header'
         })
         return
       }
@@ -92,7 +112,7 @@ export function AnalyticsEvents() {
           '/about': 'about'
         }
 
-        trackClick('service_interest', {
+        trackEvent('service_interest', {
           service_type: serviceMap[href] || 'unknown',
           link_text: text,
           destination: href
@@ -101,7 +121,7 @@ export function AnalyticsEvents() {
       }
 
       if (href.includes('paddleboston.com') || href.includes('paddlelincoln.com')) {
-        trackClick('partner_link_click', {
+        trackEvent('partner_link_click', {
           partner_name: href.includes('paddleboston') ? 'Paddle Boston' : 'Lincoln Canoe & Kayak',
           destination: href
         })
@@ -112,7 +132,7 @@ export function AnalyticsEvents() {
       const isFacebook = href.includes('facebook.com')
 
       if (isInstagram || isFacebook) {
-        trackClick('social_click', {
+        trackEvent('social_click', {
           platform: isInstagram ? 'instagram' : 'facebook',
           account_type: href.includes('mulholland_high_voltage_art')
             ? 'high_voltage_art'
@@ -123,14 +143,14 @@ export function AnalyticsEvents() {
       }
 
       if (target.closest('a[href="/"]') && target.querySelector('img')) {
-        trackClick('logo_click', {
+        trackEvent('logo_click', {
           logo_location: target.closest('header') ? 'header' : 'footer'
         })
         return
       }
 
       if (href.startsWith('tel:')) {
-        trackClick('phone_click', {
+        trackEvent('phone_click', {
           phone_number: href.replace('tel:', ''),
           link_text: text
         })
@@ -138,7 +158,7 @@ export function AnalyticsEvents() {
       }
 
       if (href.startsWith('mailto:')) {
-        trackClick('email_click', {
+        trackEvent('email_click', {
           email_address: href.replace('mailto:', ''),
           link_text: text
         })
@@ -150,7 +170,88 @@ export function AnalyticsEvents() {
     return () => {
       document.removeEventListener('click', handleClick)
     }
-  }, [])
+  }, [trackEvent])
+
+  useEffect(() => {
+    const formStates = new Map()
+
+    const getFormId = (form) =>
+      form.dataset.analyticsForm || form.id || form.getAttribute('name') || form.className || 'unknown_form'
+
+    const handleFocusIn = (event) => {
+      if (!(event.target instanceof Element)) return
+      const form = event.target.closest('form[data-analytics-form]')
+      if (!form) return
+
+      let state = formStates.get(form)
+      if (!state) {
+        state = { started: false, submitted: false }
+        formStates.set(form, state)
+      }
+
+      if (!state.started) {
+        state.started = true
+        trackEvent('form_start', {
+          form_id: getFormId(form)
+        })
+      }
+    }
+
+    const handleSubmit = (event) => {
+      const form = event.target instanceof HTMLFormElement ? event.target : null
+      if (!form || !form.matches('form[data-analytics-form]')) return
+
+      let state = formStates.get(form)
+      if (!state) {
+        state = { started: false, submitted: false }
+        formStates.set(form, state)
+      }
+
+      if (!state.started) {
+        state.started = true
+        trackEvent('form_start', {
+          form_id: getFormId(form)
+        })
+      }
+
+      state.submitted = true
+      trackEvent('form_submit', {
+        form_id: getFormId(form)
+      })
+    }
+
+    const emitAbandonEvents = () => {
+      formStates.forEach((state, form) => {
+        if (state.started && !state.submitted) {
+          trackEvent('form_abandon', {
+            form_id: getFormId(form)
+          })
+        }
+      })
+      formStates.clear()
+    }
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        emitAbandonEvents()
+      }
+    }
+
+    document.addEventListener('focusin', handleFocusIn, true)
+    document.addEventListener('submit', handleSubmit, true)
+    window.addEventListener('beforeunload', emitAbandonEvents)
+    window.addEventListener('pagehide', emitAbandonEvents)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      emitAbandonEvents()
+      document.removeEventListener('focusin', handleFocusIn, true)
+      document.removeEventListener('submit', handleSubmit, true)
+      window.removeEventListener('beforeunload', emitAbandonEvents)
+      window.removeEventListener('pagehide', emitAbandonEvents)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [location.pathname, trackEvent])
 
   return null
 }

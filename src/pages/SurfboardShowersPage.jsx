@@ -221,7 +221,11 @@ export function SurfboardShowersPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-8">
+              <form
+                onSubmit={handleSubmit}
+                data-analytics-form="surfboard_shower_form"
+                className="space-y-8"
+              >
                 {/* Contact Info */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
