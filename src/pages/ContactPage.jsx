@@ -31,19 +31,25 @@ export function ContactPage() {
       title: "Repair Services",
       description: "Expert repair for all paddlesports equipment",
       link: "/repair",
-      linkText: "Request Repair Quote"
+      linkText: "Request Repair Quote",
+      ctaType: "repair_quote",
+      serviceType: "repair_services"
     },
     {
       title: "Surfboard Showers",
       description: "Custom outdoor shower installations",
       link: "/surfboard-showers",
-      linkText: "Design Your Shower"
+      linkText: "Design Your Shower",
+      ctaType: "surfboard_showers",
+      serviceType: "surfboard_showers"
     },
     {
       title: "High Voltage Art",
       description: "Unique electrical art installations",
       link: "/high-voltage-art",
-      linkText: "Commission Art Piece"
+      linkText: "Commission Art Piece",
+      ctaType: "high_voltage_art",
+      serviceType: "high_voltage_art"
     }
   ]
 
@@ -80,6 +86,8 @@ export function ContactPage() {
                           <p className="text-gray-600 text-sm mb-2">{method.description}</p>
                           <a 
                             href={method.action}
+                            data-cta-type={method.title.toLowerCase()}
+                            data-link-text={method.contact}
                             className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
                           >
                             {method.contact}
@@ -193,6 +201,9 @@ export function ContactPage() {
                     <CardContent>
                       <a 
                         href={service.link}
+                        data-cta-type={service.ctaType}
+                        data-service-type={service.serviceType}
+                        data-button-location="contact_quick_services"
                         className="inline-flex items-center justify-center w-full px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors"
                       >
                         {service.linkText}
