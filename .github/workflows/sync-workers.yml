@@ -1,0 +1,43 @@
+# Sync worker files to Supabase via the Lyteworks dashboard API.
+# Auto-configured on field creation. Do not edit the secret reference.
+
+name: Sync Workers
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "workers/**/*.md"
+      - "agents/**/*.md"
+      - ".lyte/**/*.md"
+      - "fields/**/*.md"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Find changed files
+        id: changed
+        run: |
+          FILES=$(git diff --name-only HEAD~1 HEAD -- \
+            'workers/**/*.md' 'agents/**/*.md' '.lyte/**/*.md' 'fields/**/*.md' \
+            2>/dev/null | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "files=${FILES}" >> "$GITHUB_OUTPUT"
+          echo "count=$(echo "${FILES}" | jq 'length')" >> "$GITHUB_OUTPUT"
+
+      - name: Sync to dashboard
+        if: steps.changed.outputs.count != '0'
+        run: |
+          curl -sf "https://app.lyte.works/api/sync/workers" \
+            -X POST -H "Content-Type: application/json" \
+            -H "x-sync-secret: ${{ secrets.SYNC_SECRET }}" \
+            -d "$(jq -n \
+              --argjson repo_id ${{ github.repository_id }} \
+              --arg repo "${{ github.repository }}" \
+              --arg ref "${{ github.ref }}" \
+              --argjson files '${{ steps.changed.outputs.files }}' \
+              '{repo_id: \$repo_id, repo: \$repo, ref: \$ref, files: \$files}')"
